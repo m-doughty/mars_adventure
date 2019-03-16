@@ -1,18 +1,19 @@
-defmodule MarsAdventure.RobotTest do
+defmodule MarsAdventure.RobotNavigationTest do
   use ExUnit.Case
 
   alias MarsAdventure.Location
   alias MarsAdventure.Robot
+  alias MarsAdventure.RobotNavigation
 
   describe "the robot can turn" do
     test "left" do
       {:ok, location} = Location.new(0, 0)
       {:ok, robot} = Robot.new(location, "E")
 
-      robot_after_one_turn = Robot.turn_left(robot)
-      robot_after_two_turns = Robot.turn_left(robot_after_one_turn)
-      robot_after_three_turns = Robot.turn_left(robot_after_two_turns)
-      robot_after_four_turns = Robot.turn_left(robot_after_three_turns)
+      robot_after_one_turn = RobotNavigation.turn_left(robot)
+      robot_after_two_turns = RobotNavigation.turn_left(robot_after_one_turn)
+      robot_after_three_turns = RobotNavigation.turn_left(robot_after_two_turns)
+      robot_after_four_turns = RobotNavigation.turn_left(robot_after_three_turns)
 
       assert robot_after_one_turn.orientation == "N"
       assert robot_after_two_turns.orientation == "W"
@@ -24,10 +25,10 @@ defmodule MarsAdventure.RobotTest do
       {:ok, location} = Location.new(0, 0)
       {:ok, robot} = Robot.new(location, "E")
 
-      robot_after_one_turn = Robot.turn_right(robot)
-      robot_after_two_turns = Robot.turn_right(robot_after_one_turn)
-      robot_after_three_turns = Robot.turn_right(robot_after_two_turns)
-      robot_after_four_turns = Robot.turn_right(robot_after_three_turns)
+      robot_after_one_turn = RobotNavigation.turn_right(robot)
+      robot_after_two_turns = RobotNavigation.turn_right(robot_after_one_turn)
+      robot_after_three_turns = RobotNavigation.turn_right(robot_after_two_turns)
+      robot_after_four_turns = RobotNavigation.turn_right(robot_after_three_turns)
 
       assert robot_after_one_turn.orientation == "S"
       assert robot_after_two_turns.orientation == "W"
@@ -41,8 +42,8 @@ defmodule MarsAdventure.RobotTest do
       {:ok, location} = Location.new(5, 5)
       {:ok, robot} = Robot.new(location, "N")
 
-      %Robot{location: location_after_one_move} = robot |> Robot.move_forward()
-      %Robot{location: location_after_two_moves} = robot |> Robot.move_forward() |> Robot.move_forward()
+      %Robot{location: location_after_one_move} = robot |> RobotNavigation.move_forward()
+      %Robot{location: location_after_two_moves} = robot |> RobotNavigation.move_forward() |> RobotNavigation.move_forward()
 
       assert location_after_one_move.y == 6
       assert location_after_two_moves.y == 7
@@ -52,8 +53,8 @@ defmodule MarsAdventure.RobotTest do
       {:ok, location} = Location.new(5, 5)
       {:ok, robot} = Robot.new(location, "E")
 
-      %Robot{location: location_after_one_move} = robot |> Robot.move_forward()
-      %Robot{location: location_after_two_moves} = robot |> Robot.move_forward() |> Robot.move_forward()
+      %Robot{location: location_after_one_move} = robot |> RobotNavigation.move_forward()
+      %Robot{location: location_after_two_moves} = robot |> RobotNavigation.move_forward() |> RobotNavigation.move_forward()
 
       assert location_after_one_move.x == 6
       assert location_after_two_moves.x == 7
@@ -63,8 +64,8 @@ defmodule MarsAdventure.RobotTest do
       {:ok, location} = Location.new(5, 5)
       {:ok, robot} = Robot.new(location, "S")
 
-      %Robot{location: location_after_one_move} = robot |> Robot.move_forward()
-      %Robot{location: location_after_two_moves} = robot |> Robot.move_forward() |> Robot.move_forward()
+      %Robot{location: location_after_one_move} = robot |> RobotNavigation.move_forward()
+      %Robot{location: location_after_two_moves} = robot |> RobotNavigation.move_forward() |> RobotNavigation.move_forward()
 
       assert location_after_one_move.y == 4
       assert location_after_two_moves.y == 3
@@ -74,8 +75,8 @@ defmodule MarsAdventure.RobotTest do
       {:ok, location} = Location.new(5, 5)
       {:ok, robot} = Robot.new(location, "W")
 
-      %Robot{location: location_after_one_move} = robot |> Robot.move_forward()
-      %Robot{location: location_after_two_moves} = robot |> Robot.move_forward() |> Robot.move_forward()
+      %Robot{location: location_after_one_move} = robot |> RobotNavigation.move_forward()
+      %Robot{location: location_after_two_moves} = robot |> RobotNavigation.move_forward() |> RobotNavigation.move_forward()
 
       assert location_after_one_move.x == 4
       assert location_after_two_moves.x == 3
