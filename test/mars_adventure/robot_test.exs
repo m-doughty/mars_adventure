@@ -6,7 +6,8 @@ defmodule MarsAdventure.RobotTest do
 
   describe "navigating the robot" do
     test "the robot can turn left" do
-      {:ok, robot} = Robot.new(Location.new(0, 0), "E")
+      {:ok, location} = Location.new(0, 0)
+      {:ok, robot} = Robot.new(location, "E")
 
       robot_after_one_turn = Robot.turn_left(robot)
       robot_after_two_turns = Robot.turn_left(robot_after_one_turn)

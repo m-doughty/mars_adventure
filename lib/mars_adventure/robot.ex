@@ -12,7 +12,18 @@ defmodule MarsAdventure.Robot do
     {:ok, %__MODULE__{location: location, orientation: orientation}}
   end
 
-  def new(_, _) do
+  def new(location, orientation) do
     {:error, "Invalid construction parameters."}
+  end
+
+  def turn_left(%__MODULE__{orientation: orientation} = robot) do
+    new_orientation = case orientation do
+      "N" -> "W"
+      "E" -> "N"
+      "S" -> "E"
+      "W" -> "S"
+    end
+
+    %__MODULE__{robot | orientation: new_orientation}
   end
 end
