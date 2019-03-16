@@ -4,7 +4,15 @@
 
 Parses a text input and simulates robot movements across a grid.
 
-(Code aptitude test answer)
+(Code aptitude test solution)
+
+## Todo
+
+- Move robot
+- Move multiple robots sequentially
+- Implement loss detection & stop running instructions on loss
+- Implement location scenting & ignore instructions which would lead to loss on scent markers
+- Parse and validate input into world and robots with instructions
 
 ## Installation
 
