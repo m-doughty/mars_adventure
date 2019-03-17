@@ -5,7 +5,7 @@ defmodule MarsAdventure.HandleMultipleRobots do
   alias MarsAdventure.Domain.Robot
   alias MarsAdventure.Domain.World
 
-  @spec handle(World.t(), [{Robot.t(), [String.t()]}]) :: {World.t(), [Robot.t()]}
+  @spec handle(World.t(), [{Robot.t(), [String.t()]}]) :: %{world: World.t(), robots: [Robot.t()]}
   def handle(world, robots_with_paths) do
     Enum.reduce(robots_with_paths, %{world: world, robots: []}, fn ({robot, commands}, state) ->
       {robot_end_state, world_end_state} = handle_robot(state.world, robot, commands)

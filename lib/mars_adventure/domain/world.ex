@@ -18,9 +18,9 @@ defmodule MarsAdventure.Domain.World do
   @spec out_of_bounds?(World.t(), Location.t()) :: boolean()
   def out_of_bounds?(%World{top_right_corner: %Location{x: max_x, y: max_y}}, %Location{x: x, y: y}) do
     cond do
-      x <= 0 -> true
+      x < 0 -> true
       x > max_x -> true
-      y <= 0 -> true
+      y < 0 -> true
       y > max_y -> true
       true -> false
     end

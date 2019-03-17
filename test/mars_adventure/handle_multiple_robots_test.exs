@@ -20,21 +20,21 @@ defmodule MarsAdventure.HandleMultipleRobotsTest do
         "F" # 2 4 N
       ]
 
-      {:ok, second_robot_location} = Location.new(1, 1)
+      {:ok, second_robot_location} = Location.new(0, 0)
       {:ok, second_robot} = Robot.new(second_robot_location, "S")
       second_robot_commands = [
-        "F", # 1 1 S LOST
-        "L" # 1 1 S LOST, should not rotate
+        "F", # 0 0 S LOST
+        "L" # 0 0 S LOST, should not rotate
       ]
 
-      {:ok, third_robot_location} = Location.new(3, 1)
+      {:ok, third_robot_location} = Location.new(2, 0)
       {:ok, third_robot} = Robot.new(third_robot_location, "W")
       third_robot_commands = [
-        "F", # 2 1 W
-        "F", # 1 1 W
-        "F", # 1 1 W, saved by the scent of second's loss
-        "R", # 1 1 N
-        "F" # 1 2 N
+        "F", # 1 0 W
+        "F", # 0 0 W
+        "F", # 0 0 W, saved by the scent of second's loss
+        "R", # 0 0 N
+        "F" # 0 1 N
       ]
 
       end_state = HandleMultipleRobots.handle(world, [
@@ -58,13 +58,13 @@ defmodule MarsAdventure.HandleMultipleRobotsTest do
       assert first_lost == false
       assert first_orientation == "N"
 
-      assert second_x == 1
-      assert second_y == 1
+      assert second_x == 0
+      assert second_y == 0
       assert second_lost == true
       assert second_orientation == "S"
 
-      assert third_x == 1
-      assert third_y == 2
+      assert third_x == 0
+      assert third_y == 1
       assert third_lost == false
       assert third_orientation == "N"
     end

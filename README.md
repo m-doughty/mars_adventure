@@ -6,10 +6,6 @@ Parses a text input and simulates robot movements across a grid.
 
 (Code aptitude test solution)
 
-## Todo
-
-- Parse and validate input into world and robots with instructions
-
 ## Installation
 
 You'll need Elixir installed, along with the Mix tool.
@@ -54,5 +50,4 @@ Then run the application with the robot instructions in a file:
 
 ```
 ./mars_adventure --file=instructions.txt
-./mars_adventure -f instructions.txt
 ```
