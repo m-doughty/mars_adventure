@@ -1,4 +1,4 @@
-defmodule MarsAdventure.Location do
+defmodule MarsAdventure.Domain.Location do
   alias __MODULE__
 
   @type t :: %Location{x: integer(), y: integer()}
@@ -7,7 +7,7 @@ defmodule MarsAdventure.Location do
 
   @spec new(integer(), integer()) :: {:ok, Location.t()} | {:error, String.t()}
   def new(x, y) when is_integer(x) and is_integer(y) do
-    {:ok, %Location{x: x, y: x}}
+    {:ok, %Location{x: x, y: y}}
   end
 
   def new(_, _) do

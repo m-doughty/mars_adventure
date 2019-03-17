@@ -1,7 +1,22 @@
-defmodule MarsAdventure.RobotNavigation do
-  alias MarsAdventure.Location
-  alias MarsAdventure.Robot
-  alias MarsAdventure.World
+defmodule MarsAdventure.Domain.Robot do
+  alias __MODULE__
+  alias MarsAdventure.Domain.Location
+  alias MarsAdventure.Domain.World
+
+  @type t :: %Robot{location: Location.t(), orientation: String.t(), lost: boolean()}
+  @enforce_keys [:location, :orientation, :lost]
+  defstruct @enforce_keys
+
+  @valid_orientations ["N", "E", "S", "W"]
+
+  @spec new(Location.t(), String.t()) :: {:ok, Robot.t()} | {:error, String.t()}
+  def new(%Location{} = location, orientation) when orientation in @valid_orientations do
+    {:ok, %Robot{location: location, orientation: orientation, lost: false}}
+  end
+
+  def new(_, _) do
+    {:error, "Invalid construction parameters."}
+  end
 
   @spec turn_left(Robot.t()) :: Robot.t()
   def turn_left(%Robot{orientation: orientation, lost: false} = robot) do
@@ -49,30 +64,15 @@ defmodule MarsAdventure.RobotNavigation do
 
     new_location = Location.offset(location, delta_x, delta_y)
 
-    case out_of_bounds?(world, new_location) do
-      true -> {%Robot{robot | location: location, lost: true}, add_scent_to_location(world, location)}
-      false -> {%Robot{robot | location: new_location}, world}
+    case {World.out_of_bounds?(world, new_location), World.in_scented_locations?(world, location)} do
+      {true, true} -> {robot, world}
+      {true, false} -> {%Robot{robot | lost: true}, World.add_scent_to_location(world, location)}
+      _ -> {%Robot{robot | location: new_location}, world}
     end
   end
 
   # Ignore commands if the robot is lost
   def move_forward({robot, world}) do
     {robot, world}
-  end
-
-  @spec out_of_bounds?(World.t(), Location.t()) :: boolean()
-  defp out_of_bounds?(%World{top_right_corner: %Location{x: max_x, y: max_y}}, %Location{x: x, y: y}) do
-    cond do
-      x < 0 -> true
-      x > max_x -> true
-      y < 0 -> true
-      y > max_y -> true
-      true -> false
-    end
-  end
-
-  @spec add_scent_to_location(World.t(), Location.t()) :: World.t()
-  defp add_scent_to_location(%World{scented_locations: scented_locations} = world, location) do
-    %World{world | scented_locations: scented_locations ++ [location]}
   end
 end
