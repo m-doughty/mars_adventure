@@ -6,8 +6,8 @@ defmodule MarsAdventure.Parser do
   @spec parse_specification(String.t()) :: {:ok, World.t(), [{Robot.t(), [String.t()]}]}
   def parse_specification(specification) do
     with {:ok, world, rest} <- parse_world(specification),
-         {:ok, robots_with_commands} <- parse_robots_with_commands(rest) do
-      {:ok, world, robots_with_commands}
+         {:ok, robots_with_paths} <- parse_robots_with_paths(rest) do
+      {:ok, world, robots_with_paths}
     end
   end
 
@@ -23,26 +23,33 @@ defmodule MarsAdventure.Parser do
     end
   end
 
-  @spec parse_robots_with_commands(String.t()) :: {:ok, [{Robot.t(), [String.t()]}]}
-  defp parse_robots_with_commands(robots_and_commands) do
-    robots_and_commands_lines = String.split(robots_and_commands, "\n", trim: true)
+  @spec parse_robots_with_paths(String.t()) :: {:ok, [{Robot.t(), [String.t()]}]}
+  defp parse_robots_with_paths(robots_and_paths) do
+    robot_and_path_lines = String.split(robots_and_paths, "\n", trim: true)
 
-    %{all: all} = Enum.reduce(robots_and_commands_lines, %{line_type: :robot_line, all: [], current: {}}, fn (line, state) ->
+    %{robots_with_paths: robots_with_paths} = Enum.reduce(robot_and_path_lines, %{line_type: :robot_line, robots_with_paths: [], current: {}}, fn (line, state) ->
       case state.line_type do
         :robot_line ->
-          [x, y, orientation] = String.split(line, " ", trim: true)
-          {:ok, location} = Location.new(String.to_integer(x), String.to_integer(y))
-          {:ok, robot} = Robot.new(location, orientation)
-
-          %{line_type: :command_line, current: {robot}, all: state.all}
-        :command_line ->
+          %{state | line_type: :path_line, current: {parse_robot(line)}}
+        :path_line ->
           {robot} = state.current
-          commands = String.split(line, "", trim: true)
-
-          %{line_type: :robot_line, current: {}, all: state.all ++ [{robot, commands}]}
+          
+          %{line_type: :robot_line, current: {}, robots_with_paths: state.robots_with_paths ++ [{robot, parse_path(line)}]}
       end
     end)
 
-    {:ok, all}
+    {:ok, robots_with_paths}
+  end
+
+  defp parse_robot(robot_line) do
+    [x, y, orientation] = String.split(robot_line, " ", trim: true)
+    {:ok, location} = Location.new(String.to_integer(x), String.to_integer(y))
+    {:ok, robot} = Robot.new(location, orientation)
+
+    robot
+  end
+
+  defp parse_path(path_line) do
+    String.split(path_line, "", trim: true)
   end
 end

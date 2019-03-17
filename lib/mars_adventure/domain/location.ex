@@ -5,8 +5,11 @@ defmodule MarsAdventure.Domain.Location do
   @enforce_keys [:x, :y]
   defstruct @enforce_keys
 
+  @max_y_value 50
+  @max_x_value 50
+
   @spec new(integer(), integer()) :: {:ok, Location.t()} | {:error, String.t()}
-  def new(x, y) when is_integer(x) and is_integer(y) do
+  def new(x, y) when is_integer(x) and is_integer(y) and y <= @max_y_value and x <= @max_x_value and y >= 0 and x >= 0 do
     {:ok, %Location{x: x, y: y}}
   end
 

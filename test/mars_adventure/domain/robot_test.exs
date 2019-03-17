@@ -1,4 +1,4 @@
-defmodule MarsAdventure.RobotTest do
+defmodule MarsAdventure.Domain.RobotTest do
   use ExUnit.Case
 
   alias MarsAdventure.Domain.Location
